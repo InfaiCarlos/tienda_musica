@@ -1,0 +1,37 @@
+{% extends 'inventario/base.html' %}
+
+{% block title %}Agregar Instrumento | MelodyHouse{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card card-custom p-4 shadow">
+            <h2 class="fw-bold mb-3 text-primary"><i class="fa-solid fa-circle-plus me-2"></i>Agregar Nuevo Instrumento</h2>
+            <hr class="border-secondary">
+
+            <form method="POST" novalidate>
+                {% csrf_token %}
+                
+                {% for field in form %}
+                <div class="mb-3">
+                    <label class="form-label fw-bold text-light">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="text-danger small mt-1">
+                            {% for error in field.errors %}
+                                <i class="fa-solid fa-triangle-exclamation me-1"></i>{{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                    <a href="{% url 'listar_instrumentos' %}" class="btn btn-secondary px-4">Cancelar</a>
+                    <button type="submit" class="btn btn-primary-custom px-4"><i class="fa-solid fa-floppy-disk me-1"></i> Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
