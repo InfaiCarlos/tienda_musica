@@ -1,0 +1,27 @@
+{% extends 'inventario/base.html' %}
+
+{% block title %}Eliminar Instrumento | MelodyHouse{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card card-custom border-danger p-4 text-center">
+            <i class="fa-solid fa-triangle-exclamation fa-3x text-danger mb-3"></i>
+            <h3 class="fw-bold text-white mb-2">¿Estás seguro de eliminar este registro?</h3>
+            <p class="text-muted mb-4">Esta acción no se puede deshacer y borrará el elemento directamente de la base de datos MySQL.</p>
+
+            <div class="bg-dark p-3 rounded mb-4 text-start">
+                <p class="mb-1"><strong>Nombre:</strong> {{ instrumento.nombre }}</p>
+                <p class="mb-1"><strong>Marca:</strong> {{ instrumento.marca }}</p>
+                <p class="mb-0"><strong>Precio:</strong> ${{ instrumento.precio }}</p>
+            </div>
+
+            <form method="POST" class="d-flex justify-content-center gap-2">
+                {% csrf_token %}
+                <a href="{% url 'listar_instrumentos' %}" class="btn btn-secondary px-4">Cancelar</a>
+                <button type="submit" class="btn btn-danger px-4"><i class="fa-solid fa-trash me-1"></i> Sí, Eliminar</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
