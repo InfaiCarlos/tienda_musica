@@ -19,7 +19,7 @@ def listar_instrumentos(request):
         'instrumentos': instrumentos,
         'total': instrumentos.count()
     }
-    return render(request, 'inventario/listar.html', context)
+    return render(request, 'instrumento/listar.html', context)
 
 def crear_instrumento(request):
     """Formulario para Crear"""
@@ -31,7 +31,7 @@ def crear_instrumento(request):
             return redirect('listar_instrumentos')
     else:
         form = InstrumentoForm()
-    return render(request, 'inventario/crear.html', {'form': form})
+    return render(request, 'instrumento/crear.html', {'form': form}) 
 
 def editar_instrumento(request, id):
     """Formulario para Editar"""
@@ -44,7 +44,7 @@ def editar_instrumento(request, id):
             return redirect('listar_instrumentos')
     else:
         form = InstrumentoEditarForm(instance=instrumento)
-    return render(request, 'inventario/editar.html', {'form': form, 'instrumento': instrumento})
+    return render(request, 'instrumento/editar.html', {'form': form, 'instrumento': instrumento})
 
 def eliminar_instrumento(request, id):
     """Opción para Eliminar"""
@@ -53,4 +53,4 @@ def eliminar_instrumento(request, id):
         instrumento.delete()
         messages.warning(request, 'Instrumento eliminado correctamente.')
         return redirect('listar_instrumentos')
-    return render(request, 'inventario/eliminar.html', {'instrumento': instrumento})
+    return render(request, 'instrumento/eliminar.html', {'instrumento': instrumento})
