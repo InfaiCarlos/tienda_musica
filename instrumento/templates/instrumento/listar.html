@@ -1,0 +1,77 @@
+{% extends 'inventario/base.html' %}
+
+{% block title %}Catálogo de Instrumentos | MelodyHouse{% endblock %}
+
+{% block content %}
+<div class="row mb-4 align-items-center">
+    <div class="col-md-6">
+        <h1 class="fw-bold mb-0 text-white"><i class="fa-solid fa-compact-disc text-primary me-2"></i>Catálogo de Instrumentos</h1>
+        <p class="text-muted">Total de registros encontrados: {{ total }}</p>
+    </div>
+    <div class="col-md-6 text-md-end">
+        <a href="{% url 'crear_instrumento' %}" class="btn btn-success rounded-pill px-4">
+            <i class="fa-solid fa-plus-circle me-1"></i> Nuevo Instrumento
+        </a>
+    </div>
+</div>
+
+<!-- Filtro de Búsqueda -->
+<div class="card card-custom mb-4 p-3">
+    <form method="GET" action="{% url 'listar_instrumentos' %}" class="row g-2">
+        <div class="col-md-6">
+            <input type="text" name="buscar" class="form-control bg-dark text-white border-secondary" placeholder="Buscar por nombre..." value="{{ request.GET.buscar }}">
+        </div>
+        <div class="col-md-4">
+            <select name="categoria" class="form-select bg-dark text-white border-secondary">
+                <option value="">Todas las Categorías</option>
+                <option value="Cuerda">Cuerda</option>
+                <option value="Viento">Viento</option>
+                <option value="Percusión">Percusión</option>
+                <option value="Teclado">Teclado</option>
+                <option value="Electrónico">Electrónico</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary-custom w-100"><i class="fa-solid fa-magnifying-glass me-1"></i> Filtrar</button>
+        </div>
+    </form>
+</div>
+
+<!-- Grid de Tarjetas -->
+<div class="row g-4">
+    {% for inst in instrumentos %}
+    <div class="col-md-6 col-lg-4">
+        <div class="card card-custom h-100 shadow-sm">
+            <img src="{{ inst.imagen_url }}" class="card-img-top" alt="{{ inst.nombre }}" style="height: 200px; object-fit: cover;">
+            <div class="card-body">
+                <span class="badge bg-primary mb-2">{{ inst.categoria }}</span>
+                <h5 class="card-title fw-bold text-white">{{ inst.nombre }}</h5>
+                <p class="card-text text-muted mb-1"><i class="fa-solid fa-tag me-1"></i>Marca: <strong>{{ inst.marca }}</strong></p>
+                <p class="card-text text-muted mb-2"><i class="fa-solid fa-calendar me-1"></i>Año: {{ inst.anio_fabricacion }}</p>
+                
+                <h4 class="text-success fw-bold my-2">${{ inst.precio }}</h4>
+                <p class="small text-secondary">Stock: <span class="badge {% if inst.stock > 0 %}bg-success{% else %}bg-danger{% endif %}">{{ inst.stock }} un.</span></p>
+                
+                {% if inst.descripcion %}
+                    <p class="small text-muted">{{ inst.descripcion|truncatewords:12 }}</p>
+                {% endif %}
+            </div>
+            <div class="card-footer bg-transparent border-top border-secondary d-flex justify-content-between">
+                <a href="{% url 'editar_instrumento' inst.id %}" class="btn btn-warning btn-sm fw-bold">
+                    <i class="fa-solid fa-pen-to-square me-1"></i> Editar
+                </a>
+                <a href="{% url 'eliminar_instrumento' inst.id %}" class="btn btn-outline-danger btn-sm">
+                    <i class="fa-solid fa-trash me-1"></i> Eliminar
+                </a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12 text-center py-5">
+        <i class="fa-solid fa-guitar-electric fa-3x text-muted mb-3"></i>
+        <h4 class="text-muted">No se encontraron instrumentos registrados.</h4>
+        <a href="{% url 'crear_instrumento' %}" class="btn btn-primary-custom mt-2">Registrar el primero</a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
