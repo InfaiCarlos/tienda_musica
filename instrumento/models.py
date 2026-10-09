@@ -14,7 +14,7 @@ class Instrumento(models.Model):
     marca = models.CharField(max_length=50, verbose_name="Marca")
     categoria = models.CharField(max_length=20, choices=CATEGORIAS, verbose_name="Categoría")
     precio = models.IntegerField(
-        validators=[MinValueValidator(1, message="El precio debe ser mayor a 0")],
+        validators=[MinValueValidator(100000, message="El precio debe ser mayor a 100.000")],
         verbose_name="Precio ($)"
     )
     stock = models.IntegerField(
