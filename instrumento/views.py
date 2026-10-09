@@ -4,7 +4,6 @@ from .models import Instrumento
 from .forms import InstrumentoForm, InstrumentoEditarForm
 
 def listar_instrumentos(request):
-    """Página principal / Listado de registros"""
     busqueda = request.GET.get('buscar', '')
     categoria = request.GET.get('categoria', '')
 
@@ -22,7 +21,6 @@ def listar_instrumentos(request):
     return render(request, 'instrumento/listar.html', context)
 
 def crear_instrumento(request):
-    """Formulario para Crear"""
     if request.method == 'POST':
         form = InstrumentoForm(request.POST)
         if form.is_valid():
@@ -31,10 +29,9 @@ def crear_instrumento(request):
             return redirect('listar_instrumentos')
     else:
         form = InstrumentoForm()
-    return render(request, 'instrumento/crear.html', {'form': form}) 
+    return render(request, 'instrumento/crear.html', {'form': form})
 
 def editar_instrumento(request, id):
-    """Formulario para Editar"""
     instrumento = get_object_or_404(Instrumento, pk=id)
     if request.method == 'POST':
         form = InstrumentoEditarForm(request.POST, instance=instrumento)
@@ -47,7 +44,6 @@ def editar_instrumento(request, id):
     return render(request, 'instrumento/editar.html', {'form': form, 'instrumento': instrumento})
 
 def eliminar_instrumento(request, id):
-    """Opción para Eliminar"""
     instrumento = get_object_or_404(Instrumento, pk=id)
     if request.method == 'POST':
         instrumento.delete()

@@ -1,8 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
-
-
 class Instrumento(models.Model):
     CATEGORIAS = [
         ('Cuerda', 'Cuerda'),
@@ -29,12 +27,6 @@ class Instrumento(models.Model):
             MaxValueValidator(2026, message="El año no puede ser superior al actual")
         ],
         verbose_name="Año de Fabricación"
-    )
-    imagen_url = models.URLField(
-        blank=True, 
-        null=True, 
-        verbose_name="URL de Imagen (Opcional)",
-        default="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80"
     )
     descripcion = models.TextField(blank=True, null=True, verbose_name="Descripción")
 
