@@ -1,25 +1,375 @@
 <!DOCTYPE html>
-<html lang="es">   
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}MelodyHouse - Tienda de Música{% endblock %}</title>
-    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- FontAwesome Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background-color: #0f172a; color: #f8fafc; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
-        .navbar-custom { background-color: #1e293b; border-bottom: 2px solid #3b82f6; }
-        .card-custom { background-color: #1e293b; border: 1px solid #2aa51f; border-radius: 12px; color: #f8fafc; }
-        .btn-primary-custom { background-color: #3b82f6; border: none; font-weight: 600; }
-        .btn-primary-custom:hover { background-color: #2563eb; }
-        .footer { margin-top: auto; background-color: #0f172a; border-top: 1px solid #334155; }
+        :root {
+            --bg-dark: #17182d;
+            --bg-panel: #17182d;
+            --bg-soft: #20213b;
+            --primary: #9347f5;
+            --primary-strong: #7c32e8;
+            --secondary: #b28aff;
+            --accent: #fbbf24;
+            --gold: #fbbf24;
+            --text: #f5f3ff;
+            --muted: #b6b8d0;
+            --border: rgba(178, 138, 255, 0.2);
+            --shadow: 0 22px 45px rgba(3, 4, 15, 0.38);
+        }
+
+        * { box-sizing: border-box; }
+
+        .text-white { color: #f8f7ff !important; }
+        .text-light { color: #c9c8dc !important; }
+        .text-muted { color: #a9abc4 !important; }
+        .text-primary { color: #b28aff !important; }
+        .text-warning { color: #fbbf24 !important; }
+
+        body {
+            background:
+                radial-gradient(circle at 10% 0%, rgba(120, 57, 194, 0.24), transparent 32%),
+                radial-gradient(circle at 100% 65%, rgba(65, 44, 124, 0.2), transparent 36%),
+                linear-gradient(145deg, #17182d 0%, #21183d 52%, #17182d 100%);
+            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar-custom {
+            background: rgba(19, 20, 39, 0.92);
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            letter-spacing: 0.04em;
+        }
+
+        .nav-link {
+            color: var(--text) !important;
+            opacity: 0.75;
+            transition: opacity 0.2s ease;
+        }
+
+        .nav-link:hover { opacity: 1; }
+
+        .btn-primary-custom {
+            background: linear-gradient(135deg, #9b4dff, #7838e8);
+            border: none;
+            color: #fff;
+            font-weight: 700;
+            box-shadow: 0 10px 26px rgba(131, 60, 232, 0.32);
+        }
+
+        .btn-primary-custom:hover {
+            background: linear-gradient(135deg, #843be9, #6929d3);
+            color: #fff;
+        }
+
+        .btn-outline-light {
+            border-color: rgba(205, 196, 229, 0.32);
+            color: #f5f3ff;
+            background: rgba(255,255,255,0.03);
+        }
+
+        .btn-outline-light:hover {
+            background: rgba(255,255,255,0.08);
+            color: #fff;
+        }
+
+        .btn-outline-light:hover,
+        .btn-outline-light:focus {
+            border-color: rgba(178, 138, 255, 0.6);
+        }
+
+        .btn-secondary {
+            background: #34354c;
+            border-color: #484960;
+            color: #f5f3ff;
+            font-weight: 600;
+        }
+
+        .btn-secondary:hover {
+            background: #454660;
+            border-color: #5c5d78;
+            color: #fff;
+        }
+
+        .card-custom {
+            background: linear-gradient(145deg, #20213b, #17182d);
+            border: 1px solid rgba(178, 138, 255, 0.17);
+            border-radius: 22px;
+            color: var(--text);
+            box-shadow: var(--shadow);
+        }
+
+        .card-custom:hover {
+            transform: translateY(-3px);
+            transition: transform 0.2s ease;
+        }
+
+        .section-panel {
+            background: rgba(28, 29, 52, 0.92);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .hero-section {
+            position: relative;
+            overflow: hidden;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #211d3d 0%, #292047 48%, #30204f 100%);
+            border: 1px solid rgba(178, 138, 255, 0.17);
+            box-shadow: 0 28px 48px rgba(3, 4, 15, 0.3);
+            padding: 48px 36px;
+        }
+
+        .hero-section::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent 35%, rgba(255, 255, 255, 0.05) 50%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            padding: 8px 12px;
+            background: rgba(147, 71, 245, 0.14);
+            border: 1px solid rgba(178, 138, 255, 0.2);
+            border-radius: 999px;
+            color: #c5a8ff;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-weight: 700;
+        }
+
+        .hero-section h1 {
+            font-size: clamp(2.2rem, 5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.08;
+            margin: 18px 0 16px;
+            max-width: 620px;
+        }
+
+        .hero-section p {
+            color: #c9c8dc;
+            max-width: 560px;
+            font-size: 1.06rem;
+            margin-bottom: 24px;
+        }
+
+        .stats-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .stat-pill {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 999px;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            color: #e8e7f3;
+        }
+
+        .stat-pill strong { color: #fbbf24; }
+
+        .hero-visual {
+            position: relative;
+            padding: 30px;
+            height: 100%;
+            min-height: 280px;
+        }
+
+        .floating-card {
+            position: absolute;
+            background: rgba(17, 18, 37, 0.88);
+            border: 1px solid rgba(178, 138, 255, 0.18);
+            border-radius: 22px;
+            padding: 18px 20px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+        }
+
+        .floating-card.small { width: 180px; }
+
+        .floating-card.big { width: 200px; right: 24px; bottom: 28px; }
+
+        .floating-card.top { left: 18px; top: 18px; }
+
+        .floating-card.middle { left: 60px; bottom: 76px; }
+
+        .floating-card .label {
+            color: var(--muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .floating-card .value {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-top: 6px;
+            color: #f8f7ff;
+        }
+
+        .category-card {
+            background: rgba(31, 31, 55, 0.94);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 20px 16px;
+            text-align: center;
+            height: 100%;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(178, 138, 255, 0.65);
+        }
+
+        .category-card i {
+            font-size: 2rem;
+            color: #b28aff;
+            margin-bottom: 12px;
+        }
+
+        .category-card h5 {
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .filter-panel {
+            background: rgba(27, 28, 49, 0.95);
+            border: 1px solid rgba(178, 138, 255, 0.16);
+            border-radius: 18px;
+            padding: 20px;
+            margin-bottom: 26px;
+            box-shadow: 0 18px 35px rgba(3, 4, 15, 0.24);
+        }
+
+        .form-control, .form-select {
+            background: #22233d;
+            border: 1px solid rgba(178, 138, 255, 0.2);
+            color: #f5f3ff;
+            border-radius: 12px;
+            padding: 0.8rem 0.9rem;
+        }
+
+        .form-select option {
+            background: #22233d;
+            color: #f5f3ff;
+        }
+
+        .form-control::placeholder { color: #9294ad; }
+        .form-control:focus, .form-select:focus {
+            background: #292944;
+            color: #fff;
+            border-color: rgba(178, 138, 255, 0.7);
+            box-shadow: 0 0 0 0.22rem rgba(147,71,245,0.2);
+        }
+
+        .badge-category {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(147, 71, 245, 0.15);
+            color: #cfb5ff;
+            border: 1px solid rgba(178, 138, 255, 0.22);
+            border-radius: 999px;
+            padding: 7px 12px;
+            font-size: 0.76rem;
+            font-weight: 700;
+        }
+
+        .product-price {
+            font-size: 1.8rem;
+            color: #c2a0ff;
+            font-weight: 800;
+        }
+
+        .stock-badge {
+            border-radius: 999px;
+            padding: 7px 10px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            background: rgba(147, 71, 245, 0.15);
+            color: #cfb5ff;
+            border: 1px solid rgba(178, 138, 255, 0.22);
+        }
+
+        .bg-success-subtle {
+            background: rgba(62, 207, 142, 0.14) !important;
+            color: #7be3ad !important;
+            border: 1px solid rgba(62, 207, 142, 0.22);
+        }
+
+        .text-success-emphasis {
+            color: #7be3ad !important;
+        }
+
+        .bg-danger-subtle {
+            background: rgba(255, 153, 153, 0.12) !important;
+            color: #ffaaaa !important;
+            border: 1px solid rgba(255, 153, 153, 0.18);
+        }
+
+        .text-danger-emphasis {
+            color: #ffaaaa !important;
+        }
+
+        .card-footer {
+            background: rgba(14, 15, 31, 0.72);
+            border-top: 1px solid rgba(178, 138, 255, 0.12) !important;
+            border-radius: 0 0 22px 22px;
+        }
+
+        .empty-state {
+            padding: 36px;
+            border-radius: 22px;
+            background: rgba(28, 29, 52, 0.95);
+            border: 1px solid rgba(178, 138, 255, 0.16);
+            color: var(--text);
+        }
+
+        .footer {
+            margin-top: auto;
+            background: rgba(15, 16, 32, 0.95);
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+        }
+
+        .navbar-toggler {
+            border-color: rgba(178, 138, 255, 0.32);
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: 0 0 0 0.2rem rgba(147, 71, 245, 0.25);
+        }
+
+        @media (max-width: 767px) {
+            .hero-section { padding: 28px 18px; }
+            .floating-card { position: static; width: 100% !important; margin-bottom: 12px; }
+            .hero-visual { display: grid; gap: 12px; }
+        }
     </style>
 </head>
 <body>
-
-    <!-- Navegación -->
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom py-3">
         <div class="container">
             <a class="navbar-brand fw-bold text-primary fs-3" href="{% url 'listar_instrumentos' %}">
@@ -31,12 +381,12 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item">
-                        <a class="nav-link text-light me-3" href="{% url 'listar_instrumentos' %}">
+                        <a class="nav-link me-3" href="{% url 'listar_instrumentos' %}">
                             <i class="fa-solid fa-list me-1"></i> Ver Catálogo
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-primary-custom px-4 py-2 text-white rounded-pill" href="{% url 'crear_instrumento' %}">
+                        <a class="btn btn-primary-custom px-4 py-2 rounded-pill" href="{% url 'crear_instrumento' %}">
                             <i class="fa-solid fa-plus me-1"></i> Agregar Instrumento
                         </a>
                     </li>
@@ -45,7 +395,6 @@
         </div>
     </nav>
 
-    <!-- Mensajes Flotantes -->
     <div class="container mt-3">
         {% if messages %}
             {% for message in messages %}
@@ -57,19 +406,16 @@
         {% endif %}
     </div>
 
-    <!-- Contenido Principal -->
     <main class="container my-4">
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Footer -->
-    <footer class="footer py-3 text-center text-muted">
+    <footer class="footer py-3 text-center">
         <div class="container">
-            <small>© 2026 MelodyHouse - Proyecto Django Backend | Evaluación Sumativa 02</small>
+            <small>© 2026 MelodyHouse - Tu tienda favorita de instrumentos musicales</small>
         </div>
     </footer>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
